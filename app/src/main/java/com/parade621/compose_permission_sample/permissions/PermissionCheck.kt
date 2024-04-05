@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.parade621.compose_permission_sample.openAppSettings
+import com.parade621.compose_permission_sample.ui.components.dialog.PermissionDialog
 
 @Composable
 fun PermissionCheck(
@@ -42,16 +43,6 @@ fun PermissionCheck(
         }
     )
 
-    fun updatePermissionsList(): Array<String> {
-        val checkedList = ArrayList<String>()
-        permissions.forEach { permission ->
-            if (context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                checkedList.add(permission)
-            }
-        }
-        return checkedList.toTypedArray()
-    }
-
     DisposableEffect(Unit) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
@@ -69,6 +60,16 @@ fun PermissionCheck(
         }
     }
 
+    fun updatePermissionsList(): Array<String> {
+        val checkedList = ArrayList<String>()
+        permissions.forEach { permission ->
+            if (context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                checkedList.add(permission)
+            }
+        }
+        return checkedList.toTypedArray()
+    }
+
     LaunchedEffect(onResume, recheckPermissions) {
         if (onResume && recheckPermissions) {
             recheckPermissions = false
@@ -81,8 +82,7 @@ fun PermissionCheck(
         }
     }
 
-
-    fun setTargetPermissions(): String {
+    fun setDeniedPermissionText(): String {
         val deniedPermissionNames = mutableListOf<String>()
         deniedPermission.forEach { item ->
             when (item) {
@@ -121,7 +121,7 @@ fun PermissionCheck(
 
     if (deniedPermission.isNotEmpty()) {
         PermissionDialog(
-            permissionTextProvider = RequiredPermissionTextProvider(setTargetPermissions()),
+            permissionTextProvider = RequiredPermissionTextProvider(setDeniedPermissionText()),
             isPermanentlyDeclined = !ActivityCompat.shouldShowRequestPermissionRationale(
                 (context as Activity),
                 deniedPermission[0]
@@ -136,7 +136,7 @@ fun PermissionCheck(
             },
             onGotoAppSettingClick = {
                 onResume = false
-                (context as Activity).openAppSettings()
+                context.openAppSettings()
             }
         )
     }

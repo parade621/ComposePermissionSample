@@ -1,4 +1,4 @@
-package com.parade621.compose_permission_sample.permissions
+package com.parade621.compose_permission_sample.ui.components.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.parade621.compose_permission_sample.permissions.PermissionTextProvider
+import com.parade621.compose_permission_sample.permissions.RequiredPermissionTextProvider
 
 @Preview
 @Composable
@@ -36,7 +38,7 @@ fun PermissionDialog(
             ) {
                 Text(
                     text = if (isPermanentlyDeclined) {
-                        "Grant Permission"
+                        "Go to app setting"
                     } else {
                         "Ok"
                     },
@@ -57,7 +59,7 @@ fun PermissionDialog(
             }
         },
         title = {
-            Text(text = "Permission required")
+            Text(text = "Permission Required")
         },
         text = {
             Text(
@@ -65,7 +67,7 @@ fun PermissionDialog(
                     isPermanentlyDeclined = isPermanentlyDeclined
                 )
             )
-        },
+        }
     )
 }
 

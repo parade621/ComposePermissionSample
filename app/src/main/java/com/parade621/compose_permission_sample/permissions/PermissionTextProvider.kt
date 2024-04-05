@@ -20,9 +20,9 @@ class RequiredPermissionTextProvider(
     override fun getDescription(isPermanentlyDeclined: Boolean): AnnotatedString {
         val text = if (isPermanentlyDeclined) {
             "To run this app, Please allow access to the ${targetText}." +
-                    "\nPlease manually grant permission in your settings."
+                    "\nPlease manually grant permission in app settings."
         } else {
-            "To run this app, you must allow access to your ${targetText}."
+            "To run this app, you must allow access to ${targetText}."
         }
 
         val annotatedText = buildAnnotatedString {
