@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun LazyColumnItem(
@@ -33,7 +34,10 @@ fun LazyColumnItem(
         Box(
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
-            Text(text = permissionText)
+            Text(
+                text = permissionText,
+                fontSize = 20.sp
+            )
         }
         Button(modifier = Modifier.padding(8.dp),
             colors = ButtonDefaults

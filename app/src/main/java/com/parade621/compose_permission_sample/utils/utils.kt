@@ -1,4 +1,4 @@
-package com.parade621.compose_permission_sample
+package com.parade621.compose_permission_sample.utils
 
 import android.app.Activity
 import android.content.Intent
