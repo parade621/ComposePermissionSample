@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.parade621.compose_permission_sample.openAppSettings
+import com.parade621.compose_permission_sample.utils.openAppSettings
 import com.parade621.compose_permission_sample.ui.components.dialog.PermissionDialog
 
 @Composable
