@@ -22,7 +22,7 @@ fun MainScreen(
             itemsIndexed(state.permissionList) { index, permission ->
                 LazyColumnItem(
                     checked = permission.isChecked,
-                    checkBoxEvent = {},
+                    checkBoxEvent = {onEvent(MainEvent.OnCheckPermissionClicked(index))},
                     permissionText = permission.permissionText,
                 ) {
                     {}
