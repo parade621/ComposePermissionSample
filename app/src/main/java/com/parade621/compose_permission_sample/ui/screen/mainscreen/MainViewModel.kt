@@ -19,17 +19,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.OnCheckAllClicked -> checkAllPermission()
-            is MainEvent.OnCheckPermissionClicked -> {
-                val permissionList = _state.value.permissionList.toMutableList()
-                permissionList[event.index] =
-                    permissionList[event.index].copy(isChecked = !permissionList[event.index].isChecked)
-                Timber.e("permission: ${permissionList[event.index].permissionText} isChecked: ${permissionList[event.index].isChecked}")
-                _state.update { it.copy(permissionList = permissionList) }
-            }
+            is MainEvent.OnCheckPermissionClicked -> onCheckPermissionClicked(event.index)
 
             is MainEvent.RequestSinglePermission -> requestSinglePermission(event.index)
 
             MainEvent.RequestMultiplePermission -> requestMultiplePermission()
+            MainEvent.ResetPermissionList -> resetPermissionList()
+            MainEvent.ResetToast -> {
+                _state.update { it.copy(showToast = false) }
+            }
         }
     }
 
@@ -45,21 +43,40 @@ class MainViewModel @Inject constructor() : ViewModel() {
         _state.update { it.copy(permissionList = newList) }
     }
 
+    private fun onCheckPermissionClicked(index: Int) {
+        val permissionList = _state.value.permissionList.toMutableList()
+        val isGrant = permissionList[index].isGranted
+        permissionList[index] =
+            permissionList[index].copy(isChecked = if (isGrant) true else !permissionList[index].isChecked)
+        Timber.e("permission: ${permissionList[index].permissionText} isChecked: ${permissionList[index].isChecked}")
+        _state.update { it.copy(permissionList = permissionList) }
+        if (isGrant) {
+            _state.update { it.copy(showToast = true) }
+        }
+    }
+
     private fun checkAllPermission() {
         val newList = _state.value.permissionList.map {
-            it.copy(isChecked = !_state.value.checkAll)
+            it.copy(isChecked = if (it.isGranted) true else !_state.value.checkAll)
         }
         _state.update { it.copy(permissionList = newList, checkAll = !_state.value.checkAll) }
     }
 
     private fun requestMultiplePermission() {
-        val permissionList =
-            _state.value.permissionList.filter { it.isChecked }.map { it.permissionText }
-        Timber.e("멀티 퍼미션: ${permissionList.joinToString(", ")}")
+        _state.update { state ->
+            state.copy(requestList = _state.value.permissionList.filter { it.isChecked }
+                .map { it.permissionText })
+        }
     }
 
     private fun requestSinglePermission(index: Int) {
-        val permission = _state.value.permissionList[index].permissionText
-        Timber.e("싱글 퍼미션: $permission")
+        _state.update { state ->
+            state.copy(requestList = listOf(_state.value.permissionList[index].permissionText))
+        }
+    }
+
+    private fun resetPermissionList() {
+        _state.update { it.copy(permissionList = emptyList()) }
+        initPermissionList()
     }
 }

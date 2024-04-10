@@ -1,5 +1,7 @@
 package com.parade621.compose_permission_sample.ui.screen.mainscreen
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +21,16 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.parade621.compose_permission_sample.permissions.PermissionCheck
 import com.parade621.compose_permission_sample.ui.components.LazyColumnItem
 import com.parade621.compose_permission_sample.ui.theme.Compose_Permission_SampleTheme
 
@@ -34,6 +39,25 @@ fun MainScreen(
     state: MainState,
     onEvent: (MainEvent) -> Unit
 ) {
+    val context = LocalContext.current
+
+    if (state.requestList.isNotEmpty()) {
+        PermissionCheck(state.requestList) {
+            onEvent(MainEvent.ResetPermissionList)
+        }
+    }
+
+    LaunchedEffect(state.showToast) {
+        if (state.showToast) {
+            Toast.makeText(
+                context,
+                "This permssion is already granted",
+                Toast.LENGTH_SHORT
+            ).show()
+            onEvent(MainEvent.ResetToast)
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

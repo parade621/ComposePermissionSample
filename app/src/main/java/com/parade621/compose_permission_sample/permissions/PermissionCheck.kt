@@ -22,7 +22,7 @@ import com.parade621.compose_permission_sample.utils.openAppSettings
 
 @Composable
 fun PermissionCheck(
-    vararg permissions: String,
+    permissions: List<String>,
     onEvent: () -> Unit = {}
 ) {
     val context = LocalContext.current
