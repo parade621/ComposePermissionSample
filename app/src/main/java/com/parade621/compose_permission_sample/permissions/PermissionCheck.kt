@@ -17,12 +17,12 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.parade621.compose_permission_sample.utils.openAppSettings
 import com.parade621.compose_permission_sample.ui.components.dialog.PermissionDialog
+import com.parade621.compose_permission_sample.utils.openAppSettings
 
 @Composable
 fun PermissionCheck(
-    permissions: Array<String>,
+    vararg permissions: String,
     onEvent: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -37,6 +37,17 @@ fun PermissionCheck(
         onResult = { params ->
             if (params.values.contains(false)) {
                 deniedPermission = params.filterValues { !it }.keys.toTypedArray()
+            } else {
+                onEvent()
+            }
+        }
+    )
+
+    val singlePermissionRequestLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            if (!isGranted) {
+                deniedPermission = arrayOf(permissions[0])
             } else {
                 onEvent()
             }
@@ -77,7 +88,11 @@ fun PermissionCheck(
             if (newList.isEmpty()) {
                 onEvent()
             } else {
-                multiplePermissionRequestLauncher.launch(newList)
+                if (newList.size == 1)
+                    singlePermissionRequestLauncher.launch(newList[0])
+                else if (newList.size > 1) {
+                    multiplePermissionRequestLauncher.launch(newList)
+                }
             }
         }
     }
