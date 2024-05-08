@@ -121,26 +121,26 @@ ui는 화면을 구성하는 컴포넌트를 파일 수준 함수로 구성
 
 ## 단일 권한 요청
 
-- Reqeust 버튼을 눌러 단일 권한을 요청
+- Reqeust 버튼과 상호작용으로 단일 권한을 요청
 - 요청한 권한이 허용되면, CheckBox가 체크 상태로 유지되며 허용된 권한을 표시
 
   <img src="assets/singlePermission.gif" width="60%" height="60%">
 
 ## 복수 권한 요청
-- 요청하고자 하는 권한들을 체크한 후, 상단 우측의 Request 버튼을 눌러 복수 권한을 요청
+- 요청하고자 하는 권한들을 체크한 후, 상단 우측의 Request 버튼과 상호작용해 권한을 요청
 - 요청한 권한들이 허용되면, 각 권한의 CheckBox가 체크 상태로 유지되며 허용된 권한을 표시
 
   <img src="assets/multiPermission.gif" width="60%" height="60%">
 
 ## 권한 요청 거부 시 Dialog 표시
-- 권한 요청 다이얼로그에서 권한을 거부하면, PermissionDialog가 표시
-- OK 버튼을 누르면, 다시 한번 권한 요청 다이얼로그가 표시
+- 권한 요청 다이얼로그에서 권한을 거부하면, PermissionDialog 표시
+- OK 버튼 상호작용 시, 다시 한번 권한 요청 Dialog 표시
 
   <img src="assets/deniedOneTime.gif" width="60%" height="60%">
 
 ## 권한 요청 2번 거부 시 AppSetting으로 이동
-- 권한 요청 다이얼로그에서 권한을 2번 거부하면, App Setting으로 이동할 수 있는 PermissionDialog가 표시
-- 'Go to app Setting" 버튼을 누르면, App Setting으로 이동
-- 만약 App Setting에서 권한을 허용하지 않고 다시 앱으로 돌아오면, 계속해서 App Setting으로 이동하는 PermissionDialog가 표시
+- 권한 요청 다이얼로그에서 권한을 2번 거부하면, App Setting으로 이동을 유도하는 PermissionDialog 표시
+- 'Go to app Setting" 버튼과 상호작용 시, App Setting으로 이동
+- 만약 App Setting에서 권한을 허용하지 않고 다시 앱으로 복귀한다면, 지속적으로 App Setting 이동을 유도하는 PermissionDialog 표시
 
   <img src="assets/deniedTwoTimes.gif" width="60%" height="60%">
